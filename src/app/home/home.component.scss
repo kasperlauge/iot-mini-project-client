@@ -1,0 +1,21 @@
+.container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 10px;
+}
+
+.graph-1 {
+    display: flex;
+    justify-content: center;
+}
+
+.graph-2 {
+    display: flex;
+    justify-content: center;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}

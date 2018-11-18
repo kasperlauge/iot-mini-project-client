@@ -1,0 +1,15 @@
+<div class="container">
+  <ng-container *ngIf="!loading">
+    <div class="graph-1">
+      <div class="chart-container">
+        <h1 class="">Title1</h1>
+        <app-chart [labels]="labels" [series]="series" [options]="options"></app-chart>
+      </div>
+    </div>
+    <div class="graph-2">
+      <h1>Title2</h1>
+    </div>
+  </ng-container>
+</div>
+  
+  

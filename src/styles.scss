@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Default chartist overrides
+
+.ct-line {
+    stroke-width: 0px;
+}
+
+.ct-series-b .ct-area {
+    fill: #b4eeb4;
+}
+
+.ct-series-a .ct-area {
+    fill: #3399ff;
+}
+
+.ct-area {
+    fill-opacity: 0.6;
+}
