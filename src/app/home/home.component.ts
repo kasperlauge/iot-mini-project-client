@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EnergyService } from '../energy.service';
-import { FixedScaleAxis } from 'chartist';
+import { FixedScaleAxis, ILineChartOptions } from 'chartist';
 
 @Component({
   selector: 'app-home',
@@ -15,18 +15,23 @@ export class HomeComponent implements OnInit {
     [4,  9, 3, 6, 3, 5, 5]
   ];
 
-  options = {
+  options: ILineChartOptions = {
     low: 0,
     showArea: true,
     showPoint: false,
-    fullWidth: true
+    fullWidth: true,
+    axisX: {
+      labelInterpolationFnc: (value, index) => {
+        return index % 100 === 0 ? value : null;
+      }
+    }
   };
 
   constructor(private energyService: EnergyService) { }
 
   ngOnInit() {
     const start = new Date("2018-11-18");
-    start.setHours(12);
+    start.setHours(1);
     const end = new Date();
     this.energyService.getEnergyData(start, end).subscribe(res => {
       // Aggregate data
