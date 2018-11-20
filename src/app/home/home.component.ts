@@ -15,8 +15,6 @@ export class HomeComponent implements OnInit, OnChanges {
     [10, 6, 7, 8, 5, 4, 6],
     [4,  9, 3, 6, 3, 5, 5]
   ];
-  
-  axisFunc = (value, index) => index % 50 === 0 ? value : null;
 
   options: ILineChartOptions = {
     low: 0,
@@ -24,7 +22,7 @@ export class HomeComponent implements OnInit, OnChanges {
     showPoint: false,
     fullWidth: true,
     axisX: {
-      labelInterpolationFnc: this.axisFunc
+      labelInterpolationFnc: (value, index) => index % 50 === 0 ? value : null
     }
   };
 
@@ -53,13 +51,7 @@ export class HomeComponent implements OnInit, OnChanges {
     const end = new Date(this.endTime);
     start.setHours(12);
     end.setHours(12);
-    this.setAxisFunc();
     this.getGraphDate(start, end);
-  }
-
-  setAxisFunc() {
-    const diff = new Date(this.endTime - this.startTime).getDate();
-    this.axisFunc = (value, index) => (index % (diff*1)) === 0 ? value : null;
   }
 
   onSubmit() {
@@ -67,7 +59,6 @@ export class HomeComponent implements OnInit, OnChanges {
     const end = new Date(this.endTime);
     start.setHours(12);
     end.setHours(12);
-    this.setAxisFunc();
     this.getGraphDate(start, end);
   }
 
