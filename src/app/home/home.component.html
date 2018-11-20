@@ -1,5 +1,10 @@
 <div class="container">
   <ng-container *ngIf="!loading">
+    <form [formGroup]="form" (submit)="onSubmit()" class="date-picking-area">
+      <input type="date" formControlName="startTime" [value]="startTime" (select)="onChange($event)">
+      <input type="date" formControlName="endTime" [value]="endTime">
+      <button type="submit">Save</button>
+    </form>
     <div class="graph-1">
       <div class="chart-container">
         <h1 class="">Title1</h1>
