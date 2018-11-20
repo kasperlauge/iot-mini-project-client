@@ -19,3 +19,10 @@
     flex-direction: column;
     width: 100%;
 }
+
+.date-picking-area {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
