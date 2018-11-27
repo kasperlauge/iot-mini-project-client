@@ -5,14 +5,19 @@
       <input type="date" formControlName="endTime" [value]="endTime">
       <button type="submit">Save</button>
     </form>
+    <br>
     <div class="graph-1">
       <div class="chart-container">
-        <h1 class="">Title1</h1>
+        <h1 class="">Energy production</h1>
         <app-chart [labels]="labels" [series]="series" [options]="options" [type]="'line'"></app-chart>
+        <h3>time</h3>
       </div>
     </div>
-    <div class="graph-2">
-      <h1>Title2</h1>
+    <div class="graph-1">
+      <div class="chart-container">
+        <h1 class="">Energi by source</h1>
+        <app-chart [labels]="pielabels" [series]="pieseries" [options]="options" [type]="'pie'"></app-chart>
+      </div>
     </div>
   </ng-container>
 </div>

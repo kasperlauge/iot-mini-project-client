@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { Line } from 'chartist';
+import { Line, Pie } from 'chartist';
 
 @Component({
   selector: 'app-chart',
@@ -23,8 +23,8 @@ export class ChartComponent implements OnInit {
       case "line":
         c = new Line(this.cs.nativeElement, {labels: this.labels, series: this.series}, this.options);
       break;
-      case "":
-
+      case "pie":
+        c = new Pie(this.cs.nativeElement, {labels: this.labels, series: this.series});
       break;
 
       default:
@@ -32,5 +32,4 @@ export class ChartComponent implements OnInit {
       break;
     }
   }
-
 }

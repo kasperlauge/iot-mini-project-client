@@ -1,7 +1,8 @@
 import { Component, OnInit, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { EnergyService } from '../energy.service';
-import { FixedScaleAxis, ILineChartOptions } from 'chartist';
+import { FixedScaleAxis, ILineChartOptions, plugins } from 'chartist';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,13 @@ export class HomeComponent implements OnInit, OnChanges {
     [10, 6, 7, 8, 5, 4, 6],
     [4,  9, 3, 6, 3, 5, 5]
   ];
+  
+
+
+  pieseries = [5, 3];
+  pielabels = ["Green energy","Other energy"]
+
+
 
   options: ILineChartOptions = {
     low: 0,
@@ -22,11 +30,28 @@ export class HomeComponent implements OnInit, OnChanges {
     showPoint: false,
     fullWidth: true,
     axisX: {
-      labelInterpolationFnc: (value, index) => index % 50 === 0 ? value : null
-    }
+      labelInterpolationFnc: (value, index) => index % 50 === 0 ?  value : null
+    },
+    axisY: {
+      labelInterpolationFnc: (value) =>  value.toFixed(2) + 'MWh'
+    },
+
+    // plugins: [ plugins.ctAxisTitle({
+    //   axisX: {
+    //     axisTitle: 'Time (mins)',
+    //     axisClass: 'ct-axis-title',
+    //     textAnchor: 'middle'
+    //   },
+    //   axisY: {
+    //     axisTitle: 'Goals',
+    //     axisClass: 'ct-axis-title',
+    //     textAnchor: 'middle',
+    //     flipTitle: false
+    //   }
+    // })]
+
   };
-
-
+  
   form: FormGroup;
 
   public get startTime() {
@@ -69,6 +94,7 @@ export class HomeComponent implements OnInit, OnChanges {
       const labels = new Array<string>();
       const series1 = new Array<number>();
       const series2 = new Array<number>();
+      // Data for piechart
       for (let i = 0; i < res.length; i++) {
         labels.push(new Date(res[i].timestamp).toLocaleDateString("da-dk"));
         series1.push(res[i].totalGreenEnergy);
@@ -79,10 +105,23 @@ export class HomeComponent implements OnInit, OnChanges {
         series1
       ];
 
+      if(series1.length > 0){
+        const pieseries = new Array<number>();
+        pieseries.push(series1.reduce(this.getSum))
+        pieseries.push((series2.reduce(this.getSum)-pieseries[0]))
+        
+    
+        this.pieseries = pieseries;
+      }
+
       this.labels = labels;
       this.loading = false;
     });
   }
+
+  getSum(total, num) {
+    return total + num;
+}
 
   onChange(val) {
     console.log(val);

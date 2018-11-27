@@ -1,18 +1,27 @@
+h1, h2, h3 {
+    font-family: 'Roboto', sans-serif;
+}
+
 .container {
     display: grid;
-    grid-template-columns: auto;
-    grid-gap: 10px;
+    grid-template-columns: auto auto;
+    grid-gap: 30px;
+    background-color: lightgrey;
+    justify-content: space-around;
 }
 
 .graph-1 {
     display: flex;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 25px;
+    padding-left: 50px;
     justify-content: center;
 }
 
-.graph-2 {
-    display: flex;
-    justify-content: center;
-}
+// .graph-2 {
+//     display: flex;
+//     justify-content: center;
+// }
 
 .chart-container {
     display: flex;
