@@ -1,21 +1,45 @@
+@mixin card() {
+    border: 0.5px solid rgb(187, 187, 187);
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 0.5%;
+}
+
+
+
 h1, h2, h3 {
     font-family: 'Roboto', sans-serif;
 }
 
 .container {
     display: grid;
-    grid-template-columns: auto auto;
-    grid-gap: 30px;
-    background-color: lightgrey;
-    justify-content: space-around;
+    grid-template-areas: 
+     'header header'
+     'graph-1 graph-1'
+     'graph-area-2 graph-area-2';
+    grid-gap: 10px;
+    width: 100%;
 }
 
 .graph-1 {
     display: flex;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 25px;
-    padding-left: 50px;
+    grid-area: graph-1;
+    @include card();
+    padding: 10px 50px;
     justify-content: center;
+}
+
+.graph-2 {
+    display: flex;
+    @include card();
+    padding: 10px 50px;
+    justify-content: center;
+    max-width: 400px;
+}
+
+.graph-area-2 {
+    grid-area: graph-area-2;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 // .graph-2 {
@@ -34,4 +58,34 @@ h1, h2, h3 {
     max-width: 300px;
     display: flex;
     flex-direction: column;
+    @include card();
+    padding: 10px;
+}
+
+.header {
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+}
+
+.current-picks {
+    @include card();
+    padding: 10px;
+}
+
+.texts {
+    margin: 0;
+}
+
+.spinner {
+    grid-area: graph-1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 130px;
+}
+
+.title {
+    text-align: center;
+    margin: 10px;
 }
