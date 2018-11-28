@@ -1,5 +1,5 @@
 <div class="container">
-  <ng-container *ngIf="(!loading && !resourceLoading && !co2Loading); else loadingspinner">
+  <ng-container *ngIf="(!loading && !resourceLoading && !co2Loading && !exchangeLoading); else loadingspinner">
     <header class="header">
       <form [formGroup]="form" (submit)="onSubmit()" class="date-picking-area">
         <h5 class="texts">Pick other dates</h5>
@@ -21,16 +21,14 @@
       <div class="chart-container">
         <h1 class="title">Energy production over time</h1>
         <app-chart [labels]="labels" [series]="series" [options]="options" [type]="'line'"></app-chart>
-        <h3>time</h3>
       </div>
     </div>
     <div class="graph-2">
-        <div class="chart-container">
-          <h1 class="title">CO2 emmision over time</h1>
-          <app-chart [labels]="co2Labels" [series]="co2Series" [options]="co2Options" [type]="'line'"></app-chart>
-          <h3>time</h3>
-        </div>
+      <div class="chart-container">
+        <h1 class="title">CO2 emmision over time</h1>
+        <app-chart [labels]="co2Labels" [series]="co2Series" [options]="co2Options" [type]="'line'"></app-chart>
       </div>
+    </div>
     <div class="graph-area-3">
       <div class="graph-3">
         <div class="chart-container">
@@ -44,7 +42,19 @@
             <app-chart [labels]="resourceLabels" [series]="resouceSeries" [options]="pieChartOptions" [type]="'pie'"></app-chart>
           </div>
         </div>
+        <div class="sum-graph-3">
+            <div class="sum-container">
+              <h1 class="title">Total exchange</h1>
+              <h1 class="sum">{{ exchangeSum > 0 ? '+' : '' }}{{ exchangeSum }} </h1>
+            </div>
+          </div>
     </div>
+    <div class="graph-4">
+        <div class="chart-container">
+          <h1 class="title">Energy exchange with Germany, Sweden and Norway over time</h1>
+          <app-chart [labels]="exchangeLabels" [series]="exchangeSeries" [options]="exchangeOptions" [type]="'line'"></app-chart>
+        </div>
+      </div>
   </ng-container>
   <ng-template #loadingspinner>
     <div class="spinner">
