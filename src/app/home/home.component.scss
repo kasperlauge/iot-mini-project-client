@@ -15,7 +15,8 @@ h1, h2, h3 {
     grid-template-areas: 
      'header header'
      'graph-1 graph-1'
-     'graph-area-2 graph-area-2';
+     'graph-2 graph-2'
+     'graph-area-3 graph-area-3';
     grid-gap: 10px;
     width: 100%;
 }
@@ -30,14 +31,22 @@ h1, h2, h3 {
 
 .graph-2 {
     display: flex;
+    grid-area: graph-2;
     @include card();
     padding: 10px 50px;
     justify-content: center;
-    max-width: 400px;
 }
 
-.graph-area-2 {
-    grid-area: graph-area-2;
+.graph-3 {
+    display: flex;
+    @include card();
+    padding: 10px 0;
+    justify-content: center;
+    max-width: 300px;
+}
+
+.graph-area-3 {
+    grid-area: graph-area-3;
     display: flex;
     flex-wrap: wrap;
 }
