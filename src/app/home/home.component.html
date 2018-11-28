@@ -1,5 +1,5 @@
 <div class="container">
-  <ng-container *ngIf="!loading; else loadingspinner">
+  <ng-container *ngIf="(!loading && !resourceLoading && !co2Loading); else loadingspinner">
     <header class="header">
       <form [formGroup]="form" (submit)="onSubmit()" class="date-picking-area">
         <h5 class="texts">Pick other dates</h5>
@@ -24,13 +24,26 @@
         <h3>time</h3>
       </div>
     </div>
-    <div class="graph-area-2">
-      <div class="graph-2">
+    <div class="graph-2">
         <div class="chart-container">
-          <h1 class="title">Energi by source</h1>
-          <app-chart [labels]="pielabels" [series]="pieseries" [options]="options" [type]="'pie'"></app-chart>
+          <h1 class="title">CO2 emmision over time</h1>
+          <app-chart [labels]="co2Labels" [series]="co2Series" [options]="co2Options" [type]="'line'"></app-chart>
+          <h3>time</h3>
         </div>
       </div>
+    <div class="graph-area-3">
+      <div class="graph-3">
+        <div class="chart-container">
+          <h1 class="title">Energi by source</h1>
+          <app-chart [labels]="pielabels" [series]="pieseries" [options]="pieChartOptions" [type]="'pie'"></app-chart>
+        </div>
+      </div>
+      <div class="graph-3">
+          <div class="chart-container">
+            <h1 class="title">Energi details</h1>
+            <app-chart [labels]="resourceLabels" [series]="resouceSeries" [options]="pieChartOptions" [type]="'pie'"></app-chart>
+          </div>
+        </div>
     </div>
   </ng-container>
   <ng-template #loadingspinner>
