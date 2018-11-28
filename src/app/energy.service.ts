@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Co2EmissionDto } from './domain/co2-emission-dto';
 import { ResourceEnergyDto } from './domain/resource-energy-dto';
+import { EnergyExchangeDto } from './domain/energy-exchange-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,10 @@ export class EnergyService {
 
   getResourceEnergyData(start: Date, end: Date): Observable<ResourceEnergyDto[]> {
     return this.http.get<ResourceEnergyDto[]>(`${environment.rootUrl}/api/energy/resource?start=${start.toISOString()}&end=${end.toISOString()}`);
+  }
+
+  getEnergyExchangeData(start: Date, end: Date): Observable<EnergyExchangeDto[]> {
+    return this.http.get<EnergyExchangeDto[]>(`${environment.rootUrl}/api/energy/exchange?start=${start.toISOString()}&end=${end.toISOString()}`);
   }
 
 }

@@ -13,6 +13,8 @@ export class HomeComponent implements OnInit, OnChanges {
   loading = true;
   resourceLoading = true;
   co2Loading = true;
+  exchangeLoading = true;
+
   labels = ['man','tue','wed', 'thu', 'fri', 'sat', 'sun'];
   series = [
     [10, 6, 7, 8, 5, 4, 6],
@@ -22,13 +24,18 @@ export class HomeComponent implements OnInit, OnChanges {
 
 
   pieseries = [5, 3];
-  pielabels = ["Green energy","Other energy"]
+  pielabels = ["Other energy", "Green energy"]
 
   resouceSeries: number[];
   resourceLabels = ["Power plants","Sea mills", "Land mills", "Solar cells"];
 
   co2Series: number[][];
   co2Labels: string[];
+
+  exchangeSeries: number[][];
+  exchangeLabels: string[];
+
+  exchangeSum: number;
 
 
   pieChartOptions: IPieChartOptions = {
@@ -45,21 +52,6 @@ export class HomeComponent implements OnInit, OnChanges {
     axisY: {
       labelInterpolationFnc: (value) =>  value.toFixed(2) + 'MWh'
     }
-
-    // plugins: [ plugins.ctAxisTitle({
-    //   axisX: {
-    //     axisTitle: 'Time (mins)',
-    //     axisClass: 'ct-axis-title',
-    //     textAnchor: 'middle'
-    //   },
-    //   axisY: {
-    //     axisTitle: 'Goals',
-    //     axisClass: 'ct-axis-title',
-    //     textAnchor: 'middle',
-    //     flipTitle: false
-    //   }
-    // })]
-
   };
 
   co2Options: ILineChartOptions = {
@@ -73,21 +65,18 @@ export class HomeComponent implements OnInit, OnChanges {
     axisY: {
       labelInterpolationFnc: (value) =>  value.toFixed(2) + 'g/kWh'
     }
+  };
 
-    // plugins: [ plugins.ctAxisTitle({
-    //   axisX: {
-    //     axisTitle: 'Time (mins)',
-    //     axisClass: 'ct-axis-title',
-    //     textAnchor: 'middle'
-    //   },
-    //   axisY: {
-    //     axisTitle: 'Goals',
-    //     axisClass: 'ct-axis-title',
-    //     textAnchor: 'middle',
-    //     flipTitle: false
-    //   }
-    // })]
-
+  exchangeOptions: ILineChartOptions = {
+    showArea: true,
+    showPoint: false,
+    fullWidth: true,
+    axisX: {
+      labelInterpolationFnc: (value, index) => index % 50 === 0 ?  value : null
+    },
+    axisY: {
+      labelInterpolationFnc: (value) =>  value.toFixed(2) + 'MWh'
+    }
   };
   
   form: FormGroup;
@@ -147,8 +136,10 @@ export class HomeComponent implements OnInit, OnChanges {
 
       if(series1.length > 0){
         const pieseries = new Array<number>();
-        pieseries.push(series1.reduce(this.getSum));
-        pieseries.push((series2.reduce(this.getSum)-pieseries[0]));
+        const totalGreenEnergy = series1.reduce(this.getSum);
+        const totalEnergy = series2.reduce(this.getSum)-totalGreenEnergy;
+        pieseries.push(totalEnergy);
+        pieseries.push(totalGreenEnergy);
         
     
         this.pieseries = pieseries;
@@ -204,6 +195,27 @@ export class HomeComponent implements OnInit, OnChanges {
 
       this.co2Labels = labels;
       this.co2Loading = false;
+    });
+
+    // Get energy exhange data
+    this.energyService.getEnergyExchangeData(start, end).subscribe(res => {
+      // Aggregate data
+      const labels = new Array<string>();
+      const series1 = new Array<number>();
+
+      // Data for line graph
+      for (let i = 0; i < res.length; i++) {
+        labels.push(new Date(res[i].timestamp).toLocaleDateString("da-dk"));
+        series1.push(res[i].exchangeGermany + res[i].exchangeNorway + res[i].exhangeSweden);
+      }
+      this.exchangeSeries = [
+        series1
+      ];
+
+      this.exchangeSum = series1.reduce(this.getSum);
+
+      this.exchangeLabels = labels;
+      this.exchangeLoading = false;
     });
     
   }

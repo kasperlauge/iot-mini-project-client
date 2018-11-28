@@ -16,7 +16,8 @@ h1, h2, h3 {
      'header header'
      'graph-1 graph-1'
      'graph-2 graph-2'
-     'graph-area-3 graph-area-3';
+     'graph-area-3 graph-area-3'
+     'graph-4 graph-4';
     grid-gap: 10px;
     width: 100%;
 }
@@ -25,7 +26,7 @@ h1, h2, h3 {
     display: flex;
     grid-area: graph-1;
     @include card();
-    padding: 10px 50px;
+    padding: 30px 50px;
     justify-content: center;
 }
 
@@ -33,7 +34,7 @@ h1, h2, h3 {
     display: flex;
     grid-area: graph-2;
     @include card();
-    padding: 10px 50px;
+    padding: 30px 50px;
     justify-content: center;
 }
 
@@ -43,23 +44,29 @@ h1, h2, h3 {
     padding: 10px 0;
     justify-content: center;
     max-width: 300px;
+    
 }
 
 .graph-area-3 {
     grid-area: graph-area-3;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
-// .graph-2 {
-//     display: flex;
-//     justify-content: center;
-// }
+.graph-4 {
+    display: flex;
+    grid-area: graph-4;
+    @include card();
+    padding: 30px 50px;
+    justify-content: center;
+}
 
 .chart-container {
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 20px;
 }
 
 .date-picking-area {
@@ -84,6 +91,27 @@ h1, h2, h3 {
 
 .texts {
     margin: 0;
+}
+
+.sum-graph-3 {
+    display: flex;
+    @include card();
+    padding: 10px 0;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.sum-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+}
+
+.sum {
+    margin: auto 0;
+    text-align: center;
+    font-size: 74px;
 }
 
 .spinner {
