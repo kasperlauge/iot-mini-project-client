@@ -1,25 +1,43 @@
 <div class="container">
-  <ng-container *ngIf="!loading">
-    <form [formGroup]="form" (submit)="onSubmit()" class="date-picking-area">
-      <input type="date" formControlName="startTime" [value]="startTime" (select)="onChange($event)">
-      <input type="date" formControlName="endTime" [value]="endTime">
-      <button type="submit">Save</button>
-    </form>
+  <ng-container *ngIf="!loading; else loadingspinner">
+    <header class="header">
+      <form [formGroup]="form" (submit)="onSubmit()" class="date-picking-area">
+        <h5 class="texts">Pick other dates</h5>
+        <label>From:</label>
+        <input type="date" formControlName="startTime" [value]="startTime" (select)="onChange($event)">
+        <label>To:</label>
+        <input type="date" formControlName="endTime" [value]="endTime">
+        <br>
+        <button type="submit">Save</button>
+      </form>
+      <div class="current-picks">
+        <h5 class="texts">Showing data in the date span:</h5>
+        <p class="texts">From: {{ startTime | date }}</p>
+        <p class="texts">To: {{ endTime | date }}</p>
+      </div>
+    </header>
     <br>
     <div class="graph-1">
       <div class="chart-container">
-        <h1 class="">Energy production</h1>
+        <h1 class="title">Energy production over time</h1>
         <app-chart [labels]="labels" [series]="series" [options]="options" [type]="'line'"></app-chart>
         <h3>time</h3>
       </div>
     </div>
-    <div class="graph-1">
-      <div class="chart-container">
-        <h1 class="">Energi by source</h1>
-        <app-chart [labels]="pielabels" [series]="pieseries" [options]="options" [type]="'pie'"></app-chart>
+    <div class="graph-area-2">
+      <div class="graph-2">
+        <div class="chart-container">
+          <h1 class="title">Energi by source</h1>
+          <app-chart [labels]="pielabels" [series]="pieseries" [options]="options" [type]="'pie'"></app-chart>
+        </div>
       </div>
     </div>
   </ng-container>
+  <ng-template #loadingspinner>
+    <div class="spinner">
+      <app-loading></app-loading>
+    </div>
+  </ng-template>
 </div>
   
   
