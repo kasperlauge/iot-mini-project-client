@@ -1,19 +1,25 @@
-import { Component, OnInit, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChange, SimpleChanges, OnDestroy } from '@angular/core';
 import { EnergyService } from '../energy.service';
 import { FixedScaleAxis, ILineChartOptions, plugins, IPieChartOptions } from 'chartist';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { empty } from 'rxjs';
+import { TotalEnergyDto } from '../domain/total-energy-dto.model';
+import { GreenEnergyDto } from '../domain/green-energy-dto';
+import { Co2EmissionDto } from '../domain/co2-emission-dto';
+import { EnergyExchangeDto } from '../domain/energy-exchange-dto';
+import { zip, Subscription } from 'rxjs';
+import { ResourceEnergyDto } from '../domain/resource-energy-dto';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnChanges {
+export class HomeComponent implements OnInit, OnChanges, OnDestroy {
   loading = true;
   resourceLoading = true;
   co2Loading = true;
   exchangeLoading = true;
+  currentDataLoading = true;
 
   labels = ['man','tue','wed', 'thu', 'fri', 'sat', 'sun'];
   series = [
@@ -37,6 +43,11 @@ export class HomeComponent implements OnInit, OnChanges {
 
   exchangeSum: number;
 
+  currentTotalEnergy: TotalEnergyDto;
+  currentGreenEnergy: GreenEnergyDto;
+  currentResourceEnergy: ResourceEnergyDto;
+  currentCo2Emission: Co2EmissionDto;
+  currentExchangeEnergy: EnergyExchangeDto;
 
   pieChartOptions: IPieChartOptions = {
     chartPadding: 30
@@ -81,6 +92,12 @@ export class HomeComponent implements OnInit, OnChanges {
   
   form: FormGroup;
 
+  currentDataSubscription: Subscription;
+  totalEnergySubscription: Subscription;
+  resourceEnergySubscription: Subscription;
+  co2EmissionSubscription: Subscription;
+  energyExhangeSubscription: Subscription;
+
   public get startTime() {
     return this.form.controls["startTime"].value;
   }
@@ -118,7 +135,26 @@ export class HomeComponent implements OnInit, OnChanges {
     this.loading = true;
     this.resourceLoading = true;
     this.co2Loading = true;
-    this.energyService.getEnergyData(start, end).subscribe(res => {
+    this.currentDataLoading = true;
+
+    // Unsubscribe previous subscriptions
+    if (this.totalEnergySubscription) {
+      this.totalEnergySubscription.unsubscribe();
+    }
+    if (this.resourceEnergySubscription) {
+      this.resourceEnergySubscription.unsubscribe();
+    }
+    if (this.co2EmissionSubscription) {
+      this.co2EmissionSubscription.unsubscribe();
+    }
+    if (this.energyExhangeSubscription) {
+      this.energyExhangeSubscription.unsubscribe();
+    }
+    if (this.currentDataSubscription) {
+      this.currentDataSubscription.unsubscribe();
+    }
+
+    this.totalEnergySubscription = this.energyService.getEnergyData(start, end).subscribe(res => {
       // Aggregate data
       const labels = new Array<string>();
       const series1 = new Array<number>();
@@ -150,7 +186,7 @@ export class HomeComponent implements OnInit, OnChanges {
     });
 
     // Get resource data
-    this.energyService.getResourceEnergyData(start, end).subscribe(res => {
+    this.resourceEnergySubscription = this.energyService.getResourceEnergyData(start, end).subscribe(res => {
       // Aggregate data
       const landmills = new Array<number>();
       const seamills = new Array<number>();
@@ -179,7 +215,7 @@ export class HomeComponent implements OnInit, OnChanges {
     });
 
     // Get co2 data
-    this.energyService.getCo2Data(start, end).subscribe(res => {
+    this.co2EmissionSubscription = this.energyService.getCo2Data(start, end).subscribe(res => {
       // Aggregate data
       const labels = new Array<string>();
       const series1 = new Array<number>();
@@ -198,7 +234,7 @@ export class HomeComponent implements OnInit, OnChanges {
     });
 
     // Get energy exhange data
-    this.energyService.getEnergyExchangeData(start, end).subscribe(res => {
+    this.energyExhangeSubscription = this.energyService.getEnergyExchangeData(start, end).subscribe(res => {
       // Aggregate data
       const labels = new Array<string>();
       const series1 = new Array<number>();
@@ -217,6 +253,21 @@ export class HomeComponent implements OnInit, OnChanges {
       this.exchangeLabels = labels;
       this.exchangeLoading = false;
     });
+
+    this.currentDataSubscription = zip(
+      this.energyService.getCurrentEnergyData(),
+      this.energyService.getCurrentGreenEnergyData(),
+      this.energyService.getCurrentResourceEnergyData(),
+      this.energyService.getCurrentCo2Data(),
+      this.energyService.getCurrentEnergyExchangeData()
+    ).subscribe(data => {
+      this.currentTotalEnergy = data[0];
+      this.currentGreenEnergy = data[1];
+      this.currentResourceEnergy = data[2];
+      this.currentCo2Emission = data[3];
+      this.currentExchangeEnergy = data[4];
+      this.currentDataLoading = false;
+    });
     
   }
 
@@ -231,6 +282,24 @@ export class HomeComponent implements OnInit, OnChanges {
   ngOnChanges(value) {
     console.log(this.startTime);
     console.log(this.endTime);
+  }
+
+  ngOnDestroy() {
+    if (this.totalEnergySubscription) {
+      this.totalEnergySubscription.unsubscribe();
+    }
+    if (this.resourceEnergySubscription) {
+      this.resourceEnergySubscription.unsubscribe();
+    }
+    if (this.co2EmissionSubscription) {
+      this.co2EmissionSubscription.unsubscribe();
+    }
+    if (this.energyExhangeSubscription) {
+      this.energyExhangeSubscription.unsubscribe();
+    }
+    if (this.currentDataSubscription) {
+      this.currentDataSubscription.unsubscribe();
+    }
   }
 
 }

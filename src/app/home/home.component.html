@@ -55,6 +55,38 @@
           <app-chart [labels]="exchangeLabels" [series]="exchangeSeries" [options]="exchangeOptions" [type]="'line'"></app-chart>
         </div>
       </div>
+      <div class="area-5">
+        <div class="json">
+          <div class="json-container">
+            <h1 class="title">/api/energy/current</h1>
+            <p class="title">{{ currentTotalEnergy | json }}</p>
+          </div>
+        </div>
+        <div class="json">
+            <div class="json-container">
+                <h1 class="title">/api/energy/green/current</h1>
+                <p class="title">{{ currentGreenEnergy | json }}</p>
+            </div>
+          </div>
+          <div class="json">
+              <div class="json-container">
+                  <h1 class="title">/api/energy/resource/current</h1>
+                  <p class="title">{{ currentResourceEnergy | json }}</p>
+              </div>
+            </div>
+            <div class="json">
+              <div class="json-container">
+                  <h1 class="title">/api/co2/current</h1>
+                  <p class="title">{{ currentCo2Emission | json }}</p>
+              </div>
+            </div>
+            <div class="json">
+                <div class="json-container">
+                    <h1 class="title">/api/energy/exchange/current</h1>
+                    <p class="title">{{ currentExchangeEnergy | json }}</p>
+                </div>
+              </div>
+      </div>
   </ng-container>
   <ng-template #loadingspinner>
     <div class="spinner">
